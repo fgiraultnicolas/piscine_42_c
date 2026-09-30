@@ -6,7 +6,7 @@
 /*   By: fgirault <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/11 11:40:15 by fgirault          #+#    #+#             */
-/*   Updated: 2026/09/11 12:54:45 by fgirault         ###   ########.fr       */
+/*   Updated: 2026/09/30 14:06:36 by fgirault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,4 @@ void	ft_putstr(char *str)
 
 	n = ft_strlen(str);
 	write(1, str, n);
-}
-
-int	ft_strlen(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] != '\0')
-	{
-		i++;
-	}
-	return (i);
 }
