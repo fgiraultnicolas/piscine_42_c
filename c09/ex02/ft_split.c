@@ -6,74 +6,79 @@
 /*   By: fgirault <fgirault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/30 18:48:19 by fgirault          #+#    #+#             */
-/*   Updated: 2026/09/30 19:13:18 by fgirault         ###   ########.fr       */
+/*   Updated: 2026/10/01 18:18:09 by fgirault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 
-int	strlen_split(char *str, char *charset, int split_count, int j)
+int	is_sep(char c, char *charset)
 {
-	int	i;
-	int	count;
-
-	count = 0;
-	while (str[j] != '\0')
+	while (*charset != '\0')
 	{
-		i = 0;
-		if (split_count == 1 && str[j + 1] == '\0')
-			count++;
-		while (charset[i] != '\0')
-		{
-			if (charset[i] == str[j] && split_count == 0)
-				split_count = 1;
-			else if (charset[i] != str[j] && split_count == 1)
-			{
-				split_count = 0;
-				count++;
-			}
-			i++;
-		}
-		j++;
+		if (*charset == c)
+			return (1);
+		charset++;
+	}
+	return (0);
+}
+
+int	strlen_split(char *str, char *charset, int count)
+{
+	while (*str != '\0')
+	{
+		while (is_sep(*str, charset) == 1)
+			str++;
+		count++;
+		while (is_sep(*str, charset) == 0)
+			str++;
 	}
 	return (count);
 }
 
-char	**pre_split(char *str, char *charset, char **split_str, int split_count)
+int	word_len(char *str, char *charset, int len)
 {
-	int	i;
-	int	j;
-
-	j = 0;
-	while (j < strlen_split(str, charset, 0, 0))
+	while (is_sep(*str, charset) == 0)
 	{
-		i = 0;
-		while (charset[i] != '\0')
-		{
-			if (charset[i] == *str && split_count == 0)
-				split_count = 1;
-			else if (charset[i] != *str && split_count == 1)
-			{
-				split_count = 0;
-				split_str[j] = str;
-				j++;
-			}
-			i++;
-		}
+		len++;
 		str++;
 	}
-	split_str[j] = 0;
-	return (split_str);
+	return (len);
 }
 
 char	**ft_split(char *str, char *charset)
 {
 	char	**split_str;
 
-	split_str = malloc(sizeof(char) * (strlen_split(str, charset, 0, 0)));
-	if (split_str == 0)
+	if (str == 0 || charset == 0)
 		return (0);
-	return (pre_split(str, charset, split_str, 0));
+	split_str = malloc(sizeof(char *) * (strlen_split(str, charset, 0) + 1));
+	if (split_str == 0)
+	{
+		free(split_str);
+		return (0);
+	}
+	while (*str != '\0')
+	{
+		while (is_sep(*str, charset) == 1)
+			str++;
+		*split_str = malloc(sizeof(char) * (word_len(str, charset, 0) + 1));
+		if (*split_str == 0)
+		{
+			free(*split_str);
+			return (0);
+		}
+		while (is_sep(*str, charset) == 0)
+		{
+			**split_str = *str;
+			(*split_str)++;
+			str++;
+		}
+		**split_str = '\0';
+		split_str++;
+	}
+	*split_str = 0;
+	return (split_str);
 }
 
 #include <stdio.h>
@@ -87,7 +92,7 @@ int	main(void)
 
 	output = ft_split(str, charset);
 	i = 0;
-	while (i <= strlen_split(str, charset, 0, 0))
+	while (i <= strlen_split(str, charset, 0))
 	{
 		printf("%s\n", output[i]);
 		i++;
