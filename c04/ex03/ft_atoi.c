@@ -6,7 +6,7 @@
 /*   By: fgirault <fgirault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/23 13:20:49 by fgirault          #+#    #+#             */
-/*   Updated: 2026/09/26 09:51:31 by fgirault         ###   ########.fr       */
+/*   Updated: 2026/10/01 20:08:49 by fgirault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ int	ft_strlen_atoi(char *str)
 	int	i;
 
 	i = 0;
-	while (*str == ' ' || *str == '	' || *str == '+' || *str == '-')
+	while (*str == ' ' || (*str >= 9 && *str <= 13)
+		|| *str == '+' || *str == '-')
 		str++;
 	while (*str >= '0' && *str <= '9')
 	{

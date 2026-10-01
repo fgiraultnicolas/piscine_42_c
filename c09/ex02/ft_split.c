@@ -6,7 +6,7 @@
 /*   By: fgirault <fgirault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/30 18:48:19 by fgirault          #+#    #+#             */
-/*   Updated: 2026/10/01 18:44:12 by fgirault         ###   ########.fr       */
+/*   Updated: 2026/10/01 19:00:31 by fgirault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,27 +27,25 @@ int	strlen_split(char *str, char *charset, int count)
 {
 	while (*str != '\0')
 	{
-		while (is_sep(*str, charset) == 1)
+		while (*str != '\0' && is_sep(*str, charset) == 1)
 			str++;
-		count++;
-		while (is_sep(*str, charset) == 0)
+		if (*str != '\0')
+			count++;
+		while (*str != '\0' && is_sep(*str, charset) == 0)
 			str++;
 	}
 	return (count);
 }
 
-int	copy_word(char *str, char *charset, int len, int i)
+char	*copy_word(char *str, char *charset, int len, int i)
 {
-	char	word;
+	char	*word;
 
-	while (str[len] != '\0' && is_sep(str[len], charset))
+	while (str[len] != '\0' && is_sep(str[len], charset) == 0)
 		len++;
 	word = malloc(sizeof(char) * (len + 1));
 	if (word == 0)
-	{
-		free(word);
 		return (0);
-	}
 	while (i < len)
 	{
 		word[i] = str[i];
@@ -62,34 +60,33 @@ char	**ft_split(char *str, char *charset)
 	char	**split_str;
 	char	**const_split;
 
-	const_split = split_str;
 	if (str == 0 || charset == 0)
 		return (0);
 	split_str = malloc(sizeof(char *) * (strlen_split(str, charset, 0) + 1));
 	if (split_str == 0)
-	{
-		free(split_str);
 		return (0);
-	}
+	const_split = split_str;
 	while (*str != '\0')
 	{
 		while (*str != '\0' && is_sep(*str, charset) == 1)
 			str++;
 		if (*str != '\0')
+		{
 			*split_str = copy_word(str, charset, 0, 0);
-		while (is_sep(*str, charset) == 0)
+			split_str++;
+		}
+		while (*str != '\0' && is_sep(*str, charset) == 0)
 			str++;
-		split_str++;
 	}
 	*split_str = 0;
 	return (const_split);
 }
-
+/*
 #include <stdio.h>
 
 int	main(void)
 {
-	char	*str = "Bijour, test1,test2 test3 -test4";
+	char	*str = "Bijour, test1,test2 test3 -test4,";
 	char	*charset = ", -";
 	char **output;
 	int	i;
@@ -102,4 +99,4 @@ int	main(void)
 		i++;
 	}
 	return (0);
-}
+}*/

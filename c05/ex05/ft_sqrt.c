@@ -6,7 +6,7 @@
 /*   By: fgirault <fgirault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/22 12:29:37 by fgirault          #+#    #+#             */
-/*   Updated: 2026/09/22 12:42:47 by fgirault         ###   ########.fr       */
+/*   Updated: 2026/10/01 19:37:08 by fgirault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@ int	ft_sqrt(int nb)
 {
 	int	sqrt;
 
-	sqrt = 0;
+	if (nb <= 0)
+		return (0);
+	sqrt = 1;
 	while ((sqrt * sqrt) != nb)
 	{
 		if (sqrt == nb / 2)
@@ -28,6 +30,6 @@ int	ft_sqrt(int nb)
 
 /*int	main(void)
 {
-	printf("%d\n", ft_sqrt(4));
+	printf("%d\n", ft_sqrt(1));
 	return (0);
 }*/
