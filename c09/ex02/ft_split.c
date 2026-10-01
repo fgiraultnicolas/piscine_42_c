@@ -12,25 +12,45 @@
 
 #include <stdlib.h>
 
-int		strlen_split(char *str, char *charset, int i)
+int	strlen_split(char *str, char *charset, int split_count, int j)
 {
-	while (*str != '\0')
+	int	i;
+	int	count;
+
+	count = 0;
+	while (str[j] != '\0')
 	{
 		i = 0;
+		if (split_count == 1 && str[j + 1] == '\0')
+			count--;
 		while (charset[i] != '\0')
 		{
-			if (charset[i] == *str)
+			if (charset[i] == str[j] && split_count == 0)
+				split_count = 1;
+			else if (charset[i] != str[j] && split_count == 1)
+			{
+				split_count = 0;
 				count++;
+			}
 			i++;
 		}
-		if ()
-		str++;
+		j++;
 	}
+	return (count);
 }
+
+char	**pre_split()
 
 char	**ft_split(char *str, char *charset)
 {
 	char	**split_str;
 
-	split_str = malloc(sizeof(char) * strlen_split(str, charset, 0));
+	split_str = malloc(sizeof(char) * (strlen_split(str, charset, 0, 0));
+	while (*str != '\0')
+	{
+		i = 0;
+		if (split_count
+				)
+	}
+	return (split_str);
 }
