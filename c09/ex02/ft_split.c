@@ -6,7 +6,7 @@
 /*   By: fgirault <fgirault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/30 18:48:19 by fgirault          #+#    #+#             */
-/*   Updated: 2026/10/01 18:18:09 by fgirault         ###   ########.fr       */
+/*   Updated: 2026/10/01 18:44:12 by fgirault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,20 +36,33 @@ int	strlen_split(char *str, char *charset, int count)
 	return (count);
 }
 
-int	word_len(char *str, char *charset, int len)
+int	copy_word(char *str, char *charset, int len, int i)
 {
-	while (is_sep(*str, charset) == 0)
-	{
+	char	word;
+
+	while (str[len] != '\0' && is_sep(str[len], charset))
 		len++;
-		str++;
+	word = malloc(sizeof(char) * (len + 1));
+	if (word == 0)
+	{
+		free(word);
+		return (0);
 	}
-	return (len);
+	while (i < len)
+	{
+		word[i] = str[i];
+		i++;
+	}
+	word[i] = '\0';
+	return (word);
 }
 
 char	**ft_split(char *str, char *charset)
 {
 	char	**split_str;
+	char	**const_split;
 
+	const_split = split_str;
 	if (str == 0 || charset == 0)
 		return (0);
 	split_str = malloc(sizeof(char *) * (strlen_split(str, charset, 0) + 1));
@@ -60,25 +73,16 @@ char	**ft_split(char *str, char *charset)
 	}
 	while (*str != '\0')
 	{
-		while (is_sep(*str, charset) == 1)
+		while (*str != '\0' && is_sep(*str, charset) == 1)
 			str++;
-		*split_str = malloc(sizeof(char) * (word_len(str, charset, 0) + 1));
-		if (*split_str == 0)
-		{
-			free(*split_str);
-			return (0);
-		}
+		if (*str != '\0')
+			*split_str = copy_word(str, charset, 0, 0);
 		while (is_sep(*str, charset) == 0)
-		{
-			**split_str = *str;
-			(*split_str)++;
 			str++;
-		}
-		**split_str = '\0';
 		split_str++;
 	}
 	*split_str = 0;
-	return (split_str);
+	return (const_split);
 }
 
 #include <stdio.h>
